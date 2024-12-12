@@ -1,4 +1,6 @@
 import 'package:expenz/screens/onboarding_screen.dart';
+import 'package:expenz/servces/user_details_service.dart';
+import 'package:expenz/widgets/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,12 +15,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: "Expenz",
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: "Inter",
-        ),
-        home: OnboardingScreen());
+    return FutureBuilder(
+      future: UserService.checkUserName(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else {
+          bool hasUserName = snapshot.data ?? false;
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: "Inter",
+            ),
+            home: Wrapper(showMainScreen: hasUserName),
+          );
+        }
+      },
+    );
   }
 }

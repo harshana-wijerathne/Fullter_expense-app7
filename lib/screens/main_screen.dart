@@ -1,3 +1,5 @@
+import 'package:expenz/servces/user_details_service.dart';
+import 'package:expenz/widgets/wrapper.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Main Screnn"),
+        title: Text("Main Screen"),
       ),
     );
   }
