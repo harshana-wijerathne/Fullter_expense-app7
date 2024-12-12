@@ -1,4 +1,6 @@
 import 'package:expenz/constance/colors.dart';
+import 'package:expenz/screens/main_screen.dart';
+import 'package:expenz/servces/user_details_service.dart';
 import 'package:expenz/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -24,22 +26,22 @@ class _UserDataScreenState extends State<UserDataScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Enter your \nPersonal Details",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Enter your \nPersonal Details",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Form(
+                const SizedBox(
+                  height: 30,
+                ),
+                Form(
                   key: _formkey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,21 +133,41 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         height: 20,
                       ),
                       GestureDetector(
-                          onTap: () {
-                            if (_formkey.currentState!.validate()) {
-                              print(_usernameController.text.toString());
-                              print(_emailController.text.toString());
-                              print(_passwordContorller.text.toString());
-                              print(_confirmPasswordContorller.text.toString());
-                            }
-                          },
-                          child: CustumButton(
-                              buttonName: "Next", buttonColor: kMainColor))
+                        onTap: () async {
+                          if (_formkey.currentState!.validate()) {
+                            String userName =
+                                _usernameController.text.toString();
+                            String email = _emailController.text.toString();
+                            String password =
+                                _passwordContorller.text.toString();
+                            String confirmPassword =
+                                _confirmPasswordContorller.text.toString();
+
+                            await UserService.storeUserDetails(userName, email,
+                                password, confirmPassword, context);
+
+                            // if (context.mounted) {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) {
+                            //         return MainScreen();
+                            //       },
+                            //     ),
+                            //   );
+                            // }
+                          }
+                        },
+                        child: CustumButton(
+                            buttonName: "Next", buttonColor: kMainColor),
+                      ),
                     ],
-                  ))
-            ],
+                  ),
+                )
+              ],
+            ),
           ),
-        )),
+        ),
       ),
     );
   }
